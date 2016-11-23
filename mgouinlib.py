@@ -125,7 +125,8 @@ def metarHandler(station):
     lines = []
     station = station.upper()
     if len(station) > 0: # user provided a station
-        metarLines = getMetar(station)
+        #metarLines = getMetar(station)
+        metarLines = getMetar2(station)
         if len(metarLines) > 0: # metar data available
             stationName = findStation(station, icao = True)
             if len(stationName) > 0:

@@ -1,15 +1,14 @@
 import mgouinlib as mgl
 import sendmail as sendmail
 
-from google.appengine.api import app_identity
-from google.appengine.api import mail
+#from google.appengine.api import app_identity
 import webapp2
-import logging
+#import logging
 
 
 ################################################################################
-# http://localhost:8080/mailer?txtweb-message=Hardware+store+near+St-Hubert%2C+Qc
-# http://mgouin.appspot.com/gmls?txtweb-message=Hardware+store+near+St-Hubert%2C+Qc
+# http://localhost:8080/mailer?from=me&to=you&body=hello&subject=test
+# http://mgouin.appspot.com/mailer?from=me&to=you&body=allo&subject=test
 #
 # NOTES:
 # Need post form method
@@ -28,7 +27,7 @@ class MainPage(webapp2.RequestHandler):
 
         id = self.request.POST['thread_id']
 
-        appId = app_identity.get_application_id()
+        #appId = app_identity.get_application_id()
 
         sendmail.sendMailTest()
 

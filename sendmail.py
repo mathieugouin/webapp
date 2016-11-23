@@ -2,8 +2,6 @@
 # anything@[APP_NAME].appspotmail.com
 # noreply@mgouin.appspotmail.com
 
-
-from google.appengine.api import app_identity
 from google.appengine.api import mail
 import webapp2
 
