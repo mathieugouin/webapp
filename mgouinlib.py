@@ -1,3 +1,4 @@
+import logging
 import urllib
 import urllib2
 import re
@@ -14,6 +15,11 @@ import cgi
 GOOGLE_API_KEY = "AIzaSyBzHSfl-SZJpgCwSTnAhHjlDH5W3BDIMDk"
 BLANK_LINE = ""
 GOOGLE_SENSOR = "false"
+
+################################################################################
+def myLog(message):
+    logging.info("[DEV_DEBUG]: " + str(message))
+
 
 ################################################################################
 def readUrl(url):
@@ -119,7 +125,7 @@ def metarHandler(station):
     lines = []
     station = station.upper()
     if len(station) > 0: # user provided a station
-        metarLines = getMetar2(station)
+        metarLines = getMetar(station)
         if len(metarLines) > 0: # metar data available
             stationName = findStation(station, icao = True)
             if len(stationName) > 0:
@@ -225,7 +231,7 @@ def gmlsTest():
 
 ################################################################################
 def metarTest():
-    station = "LFPO"
+    station = "CYHU"
     #print getMetar(station) == getMetar2(station)
     #print getMetar(station)
     #print getMetar2(station)
@@ -243,6 +249,7 @@ def urlTest():
 ################################################################################
 def main():
     metarTest()
+    myLog("hello")
     #gmlsTest()
     #urlTest()
 

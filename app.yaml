@@ -19,6 +19,9 @@ handlers:
 - url: /metar/?
   script: metar.app
 
+- url: /mailer/?
+  script: mailer.app
+
 - url: /.*
   script: mgouin.app
 
