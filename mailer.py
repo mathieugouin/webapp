@@ -1,6 +1,8 @@
+# User libs
 import mgouinlib as mgl
 import sendmail as sendmail
 
+# System libs
 import webapp2
 
 
@@ -37,9 +39,7 @@ class MainPage(webapp2.RequestHandler):
         args = {}
         for argKey in self.request.arguments():
             argVal = self.request.get(argKey)
-            #mgl.myLog(argKey + " = " + argVal)
             args[argKey] = argVal
-            # TBD: Debug
             lines.append(argKey + " = " + argVal)
         mgl.myLog(args)
 
@@ -80,7 +80,7 @@ class MainPage(webapp2.RequestHandler):
                 '<body>\n\n')
 
             for l in lines:
-                #mgl.myLog(l)
+                mgl.myLog(l)
                 self.response.write(mgl.processLine(l))
 
             self.response.write('\n')
