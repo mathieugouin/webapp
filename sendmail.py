@@ -20,6 +20,7 @@ def sendMail(fromAddress, toAddress, subject, body):
     )
 
 def sendMailTest():
+    #         From                       To                  Subject                  Body
     sendMail("mathieu.gouin@yahoo.com", "mgouin@gmail.com", "test email app engine", "this is the body")
 
 if __name__ == '__main__':

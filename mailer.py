@@ -1,42 +1,65 @@
 import mgouinlib as mgl
 import sendmail as sendmail
 
-#from google.appengine.api import app_identity
 import webapp2
-#import logging
 
 
-################################################################################
+#*******************************************************************************
 # http://localhost:8080/mailer?from=me&to=you&body=hello&subject=test
 # http://mgouin.appspot.com/mailer?from=me&to=you&body=allo&subject=test
 #
 # NOTES:
 # Need post form method
-################################################################################
+#*******************************************************************************
 
 def validateInput(args):
     # TBD test if required minimum argKey (from, to, ...)
-    pass
     return True
 
 class MainPage(webapp2.RequestHandler):
 
-    def post(self):
-        mgl.myLog("post()")
-        print repr(self.request.POST)
+    #********************************************************************************
+    def commonHandler(self):
+        mgl.myLog("commonHandler()")
 
-        id = self.request.POST['thread_id']
+
+    #********************************************************************************
+    def post(self):
+        mgl.myLog("********************************************************************************")
+        mgl.myLog("post()")
+        self.commonHandler()
+
+        #mgl.myLog(self.request.POST)
+
+        # TBD: get should work
+        # https://cloud.google.com/appengine/docs/python/tools/webapp/requestclass
 
         #appId = app_identity.get_application_id()
 
         sendmail.sendMailTest()
 
+        lines = []
+
+        args = {}
+        for argKey in self.request.arguments():
+            argVal = self.request.get(argKey)
+            #mgl.myLog(argKey + " = " + argVal)
+            args[argKey] = argVal
+            lines.append(argKey + " = " + argVal)
+        mgl.myLog(args)
+
         self.response.content_type = 'text/plain'
-        self.response.write('Sent an email')
+        self.response.write('Email sent.\n')
+        for l in lines:
+            self.response.write(l + "\n")
 
 
+    #********************************************************************************
     def get(self):
+        mgl.myLog("********************************************************************************")
         mgl.myLog("get()")
+        # TBD not sure...
+        self.commonHandler()
 
         self.response.headers["Content-Type"] = "text/html; charset=utf-8"
 
@@ -54,10 +77,9 @@ class MainPage(webapp2.RequestHandler):
         args = {}
         for argKey in self.request.arguments():
             argVal = self.request.get(argKey)
-            mgl.myLog(argKey + " = " + argVal)
+            #mgl.myLog(argKey + " = " + argVal)
             args[argKey] = argVal
             lines.append(argKey + " = " + argVal)
-
         mgl.myLog(args)
 
         if not validateInput(args):
@@ -67,13 +89,13 @@ class MainPage(webapp2.RequestHandler):
         # Good attributes
         else:
             #TBD send mail here...
-            #sendmail.sendMail(args["from"], args["to"], args["subject"], args["body"])
+            #sendmail.sendMail(args["from"], args["to"], args["subject"], args["message"])
 
             #TBD test for now...
             sendmail.sendMailTest()
 
         for l in lines:
-            mgl.myLog(l)
+            #mgl.myLog(l)
             self.response.write(mgl.processLine(l))
 
         self.response.write('\n')
