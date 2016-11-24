@@ -6,7 +6,7 @@ import webapp2
 
 #*******************************************************************************
 # http://localhost:8080/mailer?from=me@acme.com&to=mgouin@gmail.com&message=hello&subject=test&name=Mat%20Gouin&redirect=redir
-# http://mgouin.appspot.com/mailer?from=me&to=you&body=allo&subject=test
+# http://mgouin.appspot.com/mailer?from=me@acme.com&to=mgouin@gmail.com&message=hello&subject=test&name=Mat%20Gouin&redirect=redir
 #
 # NOTES:
 # Need post form method
