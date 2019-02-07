@@ -158,6 +158,18 @@ def metarHandler(station):
     return lines
 
 ################################################################################
+# FlightGear metar proxy handler
+def fgHandler(station):
+    lines = []
+    station = station.upper()
+    if len(station) > 0: # user provided a station
+        baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/"
+        metarLines = readUrl(baseUrl + station)
+        if len(metarLines) > 0: # metar data available
+            lines += metarLines
+    return lines
+
+################################################################################
 def gmlsGetInfo(ref):
     params = {'reference' : ref,
               'sensor' : GOOGLE_SENSOR,

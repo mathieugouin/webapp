@@ -1,5 +1,5 @@
 application: mgouin
-version: 16
+version: 18
 runtime: python27
 api_version: 1
 threadsafe: true
@@ -18,6 +18,10 @@ handlers:
 
 - url: /metar/?
   script: metar.app
+
+# For Flight Gear Metar proxy
+- url: /fg/?
+  script: fg.app
 
 - url: /mailer/?
   script: mailer.app
