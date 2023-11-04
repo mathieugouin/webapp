@@ -1,2 +1,2 @@
-# txtWeb
-TxtWeb application on google appspot app engine.
+# webapp
+Web application running on google app engine.
