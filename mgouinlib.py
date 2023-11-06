@@ -1,9 +1,21 @@
+"""Principal library."""
+
 import logging
-import urllib
-import urllib2
 import re
+import html
+import urllib.parse
 import xml.etree.ElementTree as ET
-import cgi
+
+import requests
+
+
+logging.basicConfig(
+    # level=logging.DEBUG,
+    level=logging.INFO,
+    format='%(asctime)s%(msecs)03d %(name)-6s %(levelname)-8s %(filename)s:%(lineno)d %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S.',
+    # force=True
+    )
 
 ################################################################################
 # Notes:
@@ -22,32 +34,31 @@ def myLog(message):
 
 
 ################################################################################
-def readUrl(url):
-    lines = []
-    try:
-        for l in urllib2.urlopen(url):
-            lines.append(l.rstrip())
-    except:
-        pass
-    return lines
-
-################################################################################
 def readUrlAll(url):
     html = ""
     try:
-        html = urllib2.urlopen(url).read()
+        response = requests.get(
+            url,
+            allow_redirects=True,
+            timeout=1
+        )
+        html = response.text
     except:
         pass
     return html
 
 ################################################################################
+def readUrl(url):
+    return readUrlAll(url).splitlines()
+
+################################################################################
 def htmlEscape(line):
-    return cgi.escape(line)
+    return html.escape(line)
 
 ################################################################################
 def encodeDict(in_dict):
     out_dict = {}
-    for k, v in in_dict.iteritems():
+    for k, v in enumerate(in_dict):
         if isinstance(v, unicode):
             v = v.encode('utf8')
         elif isinstance(v, str):
@@ -203,7 +214,7 @@ def gmlsHandler(query):
     url = "https://maps.googleapis.com/maps/api/place/textsearch/xml?"
     url += urllib.urlencode(encodeDict(params))
     try:
-        f = urllib2.urlopen(url)
+        f = urllib.urlopen(url)
         root = ET.parse(f).getroot()
         if root.find('status').text == 'OK':
             results = root.findall('result')
@@ -227,7 +238,7 @@ def gmlsHandler(query):
 ################################################################################
 def outputTest(lines):
     for l in lines:
-        print processLine(l),
+        print(processLine(l)),
 
 ################################################################################
 def gmlsTest():
@@ -237,10 +248,10 @@ def gmlsTest():
     #ref = 'CoQBcgAAAJmSjg3Uwbx33GmWZQiOPr6dgz0z3oTEAbNDJR-5vcplOE_yM3Op2fsJNX5Idtja4QC5FAZgDltjN8jeVd1voMdZkY-o0KlTVatR9XgIqmWN19F0znuCewl0rgTc98Z5gwBZcqCTA7D43p2B5mGRp0wA9nETYm3p4yoftYWCAH-0EhDcQfduXY39jVnd_RsU6AkaGhQgDJ3nGr7cr9-fapWSwjrDIBkeZQ'
     # Exception
     ref = 'CnRqAAAA92F_r2BsbckojgZRSf-ddUNServOYtrsygt-LMHlZaO_akMRaqz50Oi6ihi6dRPp7vjv1e8QzIKN67u6igRff9qbQfSl3g45zUaYH8aazVN7iwxhSNXvAd7HLa6Wea22TnP5UfmNKVQgpOFx73cnBxIQTzU8pjOV1hd_80u1UKD_RxoU8dl6Af6a-kwDhPZxa7dZFugks6E'
-    print query
-    print urllib.urlencode(encodeDict({'q' : query}))
+    print(query)
+    print(urllib.parse.quote(encodeDict({'q' : query})))
     outputTest(gmlsHandler(query))
-    #outputTest(gmlsGetInfo(ref))
+    outputTest(gmlsGetInfo(ref))
 
 ################################################################################
 def metarTest():
@@ -254,18 +265,16 @@ def metarTest():
 
 ################################################################################
 def urlTest():
-    import urlparse
     # app log from txt web request
     s = "txtweb-message=caf%C3%A9%20%C3%A0%20montreal"
-    print dict(urlparse.parse_qsl(s))
+    print(dict(urllib.parse.parse_qsl(s)))
 
 ################################################################################
-def main():
+def _main():
     metarTest()
     myLog("hello")
-    #gmlsTest()
-    #urlTest()
+    # gmlsTest()
+    urlTest()
 
 if __name__ == '__main__':
-    main()
-
+    _main()
