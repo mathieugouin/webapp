@@ -2,7 +2,7 @@
 import logging
 import flask  # Flask, request, render_template
 
-import mgouinlib as MGL
+import mgouinlib as mgl
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -51,7 +51,7 @@ def fg_route():
     if args is not None and arg in args:
         station = args.get(arg).upper()
         if len(station) > 0:
-            lines = MGL.fgHandler(station)
+            lines = mgl.fgHandler(station)
             response_text = "\n".join(lines)
 
             response = flask.Response(
@@ -70,7 +70,7 @@ def mailer_route():
 
 
 @app.route('/metar')
-def mailer_route():
+def metar_route():
     """Route of the metar url."""
     return "TBD not implemented"
 
