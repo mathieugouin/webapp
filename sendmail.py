@@ -3,8 +3,9 @@
 # noreply@mgouin.appspotmail.com
 # "Albert Johnson <Albert.Johnson@example.com>"
 
-from google.appengine.api import mail
-import webapp2
+# TBD
+# from google.appengine.api import mail
+
 
 def emailAddName(email, name):
     if len(name) > 0:
@@ -16,12 +17,12 @@ def sendMail(fromAddress, toAddress, subject, body, fromName=""):
             sender = emailAddName("noreply@mgouin.appspotmail.com", fromName), # Enforced by google app engine
             reply_to = emailAddName(fromAddress, fromName),
             to = toAddress,
-            #bcc = "mgouin@gmail.com",  # for debug purposes
+            # bcc = "mgouin@gmail.com",  # for debug purposes
             subject = subject,
             body = body,
-            #headers = {
-            #    "References": 12345 # email_thread_id
-            #}
+            # headers = {
+            #     "References": 12345 # email_thread_id
+            # }
     )
 
 def sendMailTest():

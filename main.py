@@ -69,6 +69,12 @@ def mailer_route():
     return "TBD not implemented"
 
 
+@app.route('/metar')
+def mailer_route():
+    """Route of the metar url."""
+    return "TBD not implemented"
+
+
 @app.route('/test')
 def test_route():
     """Dummy test route for local testing of Flask features."""
