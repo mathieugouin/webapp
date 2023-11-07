@@ -1,6 +1,6 @@
 application: mgouin
-version: 18
-runtime: python27
+version: 19
+runtime: python311
 api_version: 1
 threadsafe: true
 
