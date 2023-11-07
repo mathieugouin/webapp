@@ -51,7 +51,7 @@ def htmlEscape(line):
 def encodeDict(in_dict):
     out_dict = {}
     for k, v in enumerate(in_dict):
-        if isinstance(v, unicode):
+        if not v.isascii():
             v = v.encode('utf8')
         elif isinstance(v, str):
             # Must be encoded in UTF-8
