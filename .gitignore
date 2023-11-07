@@ -1,6 +1,6 @@
 # Google cloud SDK
 google-cloud-sdk/
-*.tar.gz
+google-cloud-*.tar.gz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
