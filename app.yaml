@@ -2,6 +2,7 @@
 
 # application: mgouin
 # version: 19
+runtime: python311
 # api_version: 1
 # threadsafe: true
 
