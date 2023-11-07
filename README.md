@@ -8,3 +8,12 @@ TxtWeb application.
 * https://cloud.google.com/appengine/docs/standard/testing-and-deploying-your-app
 * https://console.cloud.google.com/appengine/versions
 
+## Deploy
+
+Deploy, but without affecting traffic
+
+`gcloud app deploy --no-promote`
+
+Deploy and affect traffic
+
+`gcloud app deploy`
