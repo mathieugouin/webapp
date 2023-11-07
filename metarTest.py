@@ -12,7 +12,7 @@ def main():
         #           "AK ANCHORAG/NIKISKI PAHG...."
         m =  re.match("................... (\w{4})", l)
         if m:
-            #print m.group(1)
+            # print(m.group(1))
             stations.append(m.group(1))
     dataAll = "".join(data)
     duplicate = []
@@ -35,7 +35,7 @@ def dupTest():
 
     for l in dupData:
         l = l.split()[0]
-        #print l
+        # print(l)
 
         lines = []
         txt = r"^.{20}\b" + l.strip() + r"\b"
@@ -57,6 +57,6 @@ def loadTest():
         print(MGL.readUrlAll("http://mgouin.appspot.com/metar?txtweb-message=" + l))
 
 if __name__ == '__main__':
-    #main()
-    #dupTest()
+    # main()
+    # dupTest()
     loadTest()
