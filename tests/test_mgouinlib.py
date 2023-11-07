@@ -31,7 +31,7 @@ def test_metar():
     #outputTest(findStation(station, True))
 
 def test_fgHandler():
-    stations = ["CYHU", "KLAX"]
+    stations = ["CYHU", "KLAX", "CYMX", "KJFK", "KSFO"]
     for station in stations:
         logging.info(mgl.fgHandler(station + ".TXT"))
 

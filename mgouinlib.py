@@ -167,6 +167,7 @@ def metarHandler(station):
 def fgHandler(station):
     lines = []
     station = station.upper()
+    logging.debug("fgHandler %s", station)
     if len(station) > 0: # user provided a station
         baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/"
         metarLines = readUrl(baseUrl + station)
