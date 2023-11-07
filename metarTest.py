@@ -22,7 +22,7 @@ def main():
             duplicate.append("%s %d" % (station, nb))
     #print stations.
     for d in duplicate:
-        print d
+        print(d)
 
 def dupTest():
     f = open("duplicate.txt", "r")
@@ -44,7 +44,7 @@ def dupTest():
                 lines.append(l)
         nb = len(lines)
         if nb != 1:
-            print l, nb
+            print(l, nb)
 
 def loadTest():
     f = open("duplicate.txt", "r")
@@ -52,9 +52,9 @@ def loadTest():
     f.close()
     for l in dupData:
         l = l.split()[0]
-        print "##########################################"
-        print l
-        print MGL.readUrlAll("http://mgouin.appspot.com/metar?txtweb-message=" + l)
+        print("##########################################")
+        print(l)
+        print(MGL.readUrlAll("http://mgouin.appspot.com/metar?txtweb-message=" + l))
 
 if __name__ == '__main__':
     #main()

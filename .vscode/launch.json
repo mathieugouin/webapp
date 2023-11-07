@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "justMyCode": true
+        },
+        {
+            "name": "Python Config for test explorer (hidden)",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "purpose": ["debug-test"],
+            "justMyCode": true,
+            "presentation": {
+                "hidden": true,
+                "group": "",
+                "order": 4
+            }
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+# pip dependency requirement for CI
+#
+# Make sure pip is up to date:
+# python -m pip install --upgrade pip
+#
+# Install all required packages:
+# python -m pip install -r requirements.txt
+#
+# Manual package install:
+# python -m pip install package_name
+#
+# Package upgrade:
+# python -m pip install package_name --upgrade
+#
+# List all packages versions:
+# python -m pip list
+
+# Main
+requests
+Flask
+
+# For CI
+pytest
+coverage

@@ -1,6 +1,6 @@
 # User libs
 import mgouinlib as mgl
-import sendmail as sendmail
+import sendmail
 
 # System libs
 import webapp2
