@@ -27,6 +27,14 @@ def home_route():
     return flask.render_template('index.html')
 
 
+################################################################################
+# Notes:
+# NEW https://tgftp.nws.noaa.gov/data/observations/metar/stations/CYHU.TXT
+# OLD http://tgftp.nws.noaa.gov/data/observations/metar/stations/CYHU.TXT
+# MG  http://mgouin.appspot.com/fg?icao-station-identifier-name1=CYHU.TXT
+#
+# http://localhost:8080/fg?icao-station-identifier-name1=CYHU.TXT
+################################################################################
 @app.route('/fg')
 def fg_route():
     """Route for FlightGear (FG) metar proxy."""
