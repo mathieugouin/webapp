@@ -15,5 +15,10 @@
 # List all packages versions:
 # python -m pip list
 
+# Main
 requests
 Flask
+
+# For CI
+pytest
+coverage
