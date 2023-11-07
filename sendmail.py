@@ -4,7 +4,7 @@
 # "Albert Johnson <Albert.Johnson@example.com>"
 
 # TBD
-# from google.appengine.api import mail
+from google.appengine.api import mail
 
 
 def emailAddName(email, name):
