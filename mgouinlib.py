@@ -50,12 +50,13 @@ def htmlEscape(line):
 ################################################################################
 def encodeDict(in_dict):
     out_dict = {}
-    for k, v in enumerate(in_dict):
+    for k, v in in_dict.items():
         if not v.isascii():
             v = v.encode('utf8')
-        elif isinstance(v, str):
-            # Must be encoded in UTF-8
-            v.decode('utf8')
+        # TBD...
+        # elif isinstance(v, str):
+        #     # Must be encoded in UTF-8
+        #     v.decode('utf8')
         out_dict[k] = v
     return out_dict
 
@@ -67,8 +68,7 @@ def surroundDiv(line):
 def processLine(line):
     if line == BLANK_LINE:
         return surroundDiv("&nbsp;")
-    else:
-        return surroundDiv(htmlEscape(line))
+    return surroundDiv(htmlEscape(line))
 
 ################################################################################
 def findStation(txt, icao = False):
@@ -93,6 +93,7 @@ def getMetar(station):
 
 ################################################################################
 def getMetar2(station):
+    # TBD not working
     metarLines = []
     url = "http://aviationweather.gov/adds/metars/?station_ids=" + station + \
           "&std_trans=standard&chk_metars=on&hoursStr=most+recent+only&submitmet=Submit"
@@ -128,10 +129,10 @@ def getTaf(station):
 def metarHandler(station):
     lines = []
     station = station.upper()
-    if len(station) > 0: # user provided a station
+    if len(station) > 0:  # user provided a station
         #metarLines = getMetar(station)
         metarLines = getMetar2(station)
-        if len(metarLines) > 0: # metar data available
+        if len(metarLines) > 0:  # metar data available
             stationName = findStation(station, icao = True)
             if len(stationName) > 0:
                 match = re.match(r"^(...................)", stationName[0])
@@ -144,7 +145,7 @@ def metarHandler(station):
                 lines.append(BLANK_LINE)
                 lines += tafLines
         else: # metar data not found
-            for l in findStation(station): # try to find the name of the station
+            for l in findStation(station):  # try to find the name of the station
                 #                    CO GRAND JUNCTION   KGJT  GJT
                 match = re.match(r"^(.............................)", l)
                 if match:
@@ -257,6 +258,12 @@ def metarTest():
     #outputTest(findStation(station, True))
 
 ################################################################################
+def fgHandlerTest():
+    stations = ["CYHU", "KLAX"]
+    for station in stations:
+        logging.info(fgHandler(station + ".TXT"))
+
+################################################################################
 def urlTest():
     # app log from txt web request
     s = "txtweb-message=caf%C3%A9%20%C3%A0%20montreal"
@@ -264,8 +271,9 @@ def urlTest():
 
 ################################################################################
 def _main():
+    myLog("myLog(): Hello")
+    fgHandlerTest()
     metarTest()
-    myLog("hello")
     # gmlsTest()
     urlTest()
 
