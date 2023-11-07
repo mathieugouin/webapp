@@ -1,10 +1,7 @@
 # Ref: https://cloud.google.com/appengine/docs/standard/python3/building-app/writing-web-service
 
-# application: mgouin
-# version: 19
 runtime: python311
 # api_version: 1
-# threadsafe: true
 
 handlers:
   # This configures Google App Engine to serve the files in the app's static
