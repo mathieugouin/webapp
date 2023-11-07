@@ -21,6 +21,13 @@ app = flask.Flask(
     )
 
 
+# - url: /gmls/?
+# - url: /metar/?
+# - url: /fg/?          DONE
+# - url: /mailer/?      TBD
+# - url: /.*            DONE
+
+
 @app.route('/')
 def home_route():
     """Route of the root url."""
@@ -52,9 +59,14 @@ def fg_route():
                 content_type="text/plain; charset=us-ascii"
             )
             return response
-
         return "no metar"
     return "no metar"
+
+
+@app.route('/mailer')
+def mailer_route():
+    """Route of the mailer url."""
+    return "TBD not implemented"
 
 
 @app.route('/test')
