@@ -38,7 +38,6 @@ def home_route():
 @app.route('/fg')
 def fg_route():
     """Route for FlightGear (FG) metar proxy."""
-
     arg = "icao-station-identifier-name1"
     args = flask.request.args
     # Long name to match previous FG URL (this will include .TXT, ex: CYHU.TXT)
@@ -56,8 +55,6 @@ def fg_route():
 
         return "no metar"
     return "no metar"
-
-
 
 
 @app.route('/test')
