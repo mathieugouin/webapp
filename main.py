@@ -12,17 +12,38 @@ logging.basicConfig(
     )
 
 
-app = Flask(__name__, static_url_path='/static')
+# Create the Flask app
+app = Flask(
+    __name__,
+    # static_url_path='/static',
+    # template_folder='/templates',
+    )
+
 
 @app.route('/')
-def home():
+def home_route():
+    """Route of the root url."""
+    return render_template('index.html')
+
+
+@app.route('/fg')
+def fg_route():
+    """Route for FlightGear (FG) metar proxy."""
+    return ""
+    #return render_template('index.html')
+
+
+@app.route('/test')
+def test_route():
+    """Dummy test route for local testing of Flask features."""
     html = render_template('test.html',
                            greeting='Hello you',
                            p_list=['a', 'b', 'hello you', '2 > 3', '     '])
     logging.debug(html)
+    return html
 
-    name = request.args.get('name')
-    return f'Hello, {name}' if name else 'Hello, World!'
+    # name = request.args.get('name')
+    # return f'Hello, {name}' if name else 'Hello, World!'
 
 
 if __name__ == '__main__':
