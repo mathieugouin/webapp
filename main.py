@@ -1,3 +1,4 @@
+"""Main web app entry point using Flask for Google App Engine."""
 import logging
 from flask import Flask, request, render_template
 
@@ -15,13 +16,25 @@ app = Flask(__name__, static_url_path='/static')
 
 @app.route('/')
 def home():
-    # TBD not working...
-    # html = render_template('templates/greeting.html', greeting='Hello you')
-    # logging.debug(html)
+    html = render_template('test.html',
+                           greeting='Hello you',
+                           p_list=['a', 'b', 'hello you', '2 > 3', '     '])
+    logging.debug(html)
 
     name = request.args.get('name')
     return f'Hello, {name}' if name else 'Hello, World!'
 
 
 if __name__ == '__main__':
-    app.run(port=8080)
+    # This is used when running locally only. When deploying to Google App
+    # Engine, a webserver process such as Gunicorn will serve the app. This
+    # can be configured by adding an `entrypoint` to app.yaml.
+    # Flask's development server will automatically serve static files in
+    # the "static" directory. See:
+    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
+    # App Engine itself will serve those files as configured in app.yaml.
+    app.run(
+        # host="127.0.0.1"
+        port=8080,
+        debug=True,
+    )
