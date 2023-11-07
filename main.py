@@ -1,7 +1,8 @@
 """Main web app entry point using Flask for Google App Engine."""
 import logging
-from flask import Flask, request, render_template
+import flask  # Flask, request, render_template
 
+import mgouinlib as MGL
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -13,7 +14,7 @@ logging.basicConfig(
 
 
 # Create the Flask app
-app = Flask(
+app = flask.Flask(
     __name__,
     # static_url_path='/static',
     # template_folder='/templates',
@@ -23,20 +24,38 @@ app = Flask(
 @app.route('/')
 def home_route():
     """Route of the root url."""
-    return render_template('index.html')
+    return flask.render_template('index.html')
 
 
 @app.route('/fg')
 def fg_route():
     """Route for FlightGear (FG) metar proxy."""
-    return ""
-    #return render_template('index.html')
+
+    arg = "icao-station-identifier-name1"
+    args = flask.request.args
+    # Long name to match previous FG URL (this will include .TXT, ex: CYHU.TXT)
+    if args is not None and arg in args:
+        station = args.get(arg).upper()
+        if len(station) > 0:
+            lines = MGL.fgHandler(station)
+            response_text = "\n".join(lines)
+
+            response = flask.Response(
+                response=response_text,
+                content_type="text/plain; charset=us-ascii"
+            )
+            return response
+
+        return "no metar"
+    return "no metar"
+
+
 
 
 @app.route('/test')
 def test_route():
     """Dummy test route for local testing of Flask features."""
-    html = render_template('test.html',
+    html = flask.render_template('test.html',
                            greeting='Hello you',
                            p_list=['a', 'b', 'hello you', '2 > 3', '     '])
     logging.debug(html)

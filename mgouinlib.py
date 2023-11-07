@@ -9,14 +9,6 @@ import xml.etree.ElementTree as ET
 import requests
 
 
-logging.basicConfig(
-    # level=logging.DEBUG,
-    level=logging.INFO,
-    format='%(asctime)s%(msecs)03d %(name)-6s %(levelname)-8s %(filename)s:%(lineno)d %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S.',
-    # force=True
-    )
-
 ################################################################################
 # Notes:
 # https://appengine.google.com/
@@ -94,7 +86,8 @@ def getMetar(station):
     for l in readUrl("http://weather.noaa.gov/pub/data/observations/metar/stations/" + station + ".TXT"):
         if re.search('was not found on this server', l):
             break
-        elif re.search(station, l):
+
+        if re.search(station, l):
             metarLines.append(l)
     return metarLines
 
@@ -277,4 +270,12 @@ def _main():
     urlTest()
 
 if __name__ == '__main__':
+    logging.basicConfig(
+        # level=logging.DEBUG,
+        level=logging.INFO,
+        format='%(asctime)s%(msecs)03d %(name)-6s %(levelname)-8s %(filename)s:%(lineno)d %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S.',
+        force=True
+        )
+
     _main()
