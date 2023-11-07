@@ -1,5 +1,5 @@
-# txtWeb
-TxtWeb application.
+# webapp
+Web application running on google app engine.
 
 # Notes
 
