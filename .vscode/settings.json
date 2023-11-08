@@ -8,6 +8,7 @@
     "python.testing.pytestArgs": [
         "--verbose",
         "-rfEsxXP",
-        "--strict-markers"
+        "--strict-markers",
+        "tests/"
     ]
 }
