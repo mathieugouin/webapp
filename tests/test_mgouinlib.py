@@ -1,11 +1,31 @@
 import logging
+import pytest
 import mgouinlib as mgl
 
 
-def test_output():
-    lines = ['hello', 'bye']
-    for l in lines:
-        print(mgl.processLine(l))
+@pytest.mark.parametrize("line", [
+    "",
+    "A",
+    "Hello world!",
+    " ",
+    "   ",
+    ])
+def test_processBlankLine(line):
+    print(mgl.processBlankLine(line))
+
+
+@pytest.mark.parametrize("line", [
+    "",
+    "123",
+    "Hello world!",
+    ">",
+    "<",
+    "\\",
+    "/",
+    "&",
+    ])
+def test_processLine(line):
+    print(mgl.processLine(line))
 
 
 def test_gmls():
@@ -21,14 +41,26 @@ def test_gmls():
     # mgl.outputTest(mgl.gmlsHandler(query))
     # mgl.outputTest(mgl.gmlsGetInfo(ref))
 
-def test_metar():
-    station = "CYHU"
-    #print getMetar(station) == getMetar2(station)
-    #print getMetar(station)
-    #print getMetar2(station)
-    #outputTest(getTaf(station))
+@pytest.mark.parametrize("station", [
+    # Empty to display help
+    "",
+    # Regular ICAO code
+    "CYHU",
+    "CYUL",
+    "CYMX",
+    "KJFK",
+    "KSFO",
+    "KLAX",
+    # Query
+    "Miami",
+    "Montreal",
+    ])
+def test_metarHandler(station):
+    # assert mgl.getMetar(station) == mgl.getMetar2(station)
+    # print getMetar(station)
+    # print getMetar2(station)
+    # mgl.outputTest(mgl.getTaf(station))
     mgl.outputTest(mgl.metarHandler(station))
-    #outputTest(findStation(station, True))
 
 def test_fgHandler():
     stations = ["CYHU", "KLAX"]

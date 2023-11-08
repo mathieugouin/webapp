@@ -2,7 +2,7 @@
 
 import logging
 import re
-import html
+import html as htmllib  # TBD rename local vars html to something else.
 import urllib.parse
 import xml.etree.ElementTree as ET
 
@@ -26,11 +26,12 @@ def myLog(message):
 
 
 ################################################################################
-def readUrlAll(url):
+def readUrlAll(url, params=None):
     html = ""
     try:
         response = requests.get(
             url,
+            params=params,
             allow_redirects=True,
             timeout=1
         )
@@ -40,12 +41,12 @@ def readUrlAll(url):
     return html
 
 ################################################################################
-def readUrl(url):
-    return readUrlAll(url).splitlines()
+def readUrl(url, params=None):
+    return readUrlAll(url, params).splitlines()
 
 ################################################################################
 def htmlEscape(line):
-    return html.escape(line)
+    return htmllib.escape(line)
 
 ################################################################################
 def encodeDict(in_dict):
@@ -65,6 +66,12 @@ def surroundDiv(line):
     return "<div>" + line + "</div>\n"
 
 ################################################################################
+def processBlankLine(line):
+    if line == BLANK_LINE:
+        return "&nbsp;"
+    return line
+
+################################################################################
 def processLine(line):
     if line == BLANK_LINE:
         return surroundDiv("&nbsp;")
@@ -81,42 +88,50 @@ def findStation(txt, icao = False):
     return lines
 
 ################################################################################
-def getMetar(station):
+def _getMetar1(station):
+    """This version is not as reliable as the v2."""
+    station = station.upper()
     metarLines = []
-    for l in readUrl("http://weather.noaa.gov/pub/data/observations/metar/stations/" + station + ".TXT"):
+    for l in readUrl("https://tgftp.nws.noaa.gov/data/observations/metar/stations/" + station + ".TXT"):
         if re.search('was not found on this server', l):
             break
-
         if re.search(station, l):
             metarLines.append(l)
+    logging.info(metarLines)
     return metarLines
 
 ################################################################################
-def getMetar2(station):
-    # TBD not working
+def _getMetar2(station):
+    station = station.upper()
     metarLines = []
-    url = "http://aviationweather.gov/adds/metars/?station_ids=" + station + \
-          "&std_trans=standard&chk_metars=on&hoursStr=most+recent+only&submitmet=Submit"
+    url = "https://aviationweather.gov/cgi-bin/data/metar.php?ids=" + station + \
+          "&hours=0&order=id%2C-obs&sep=true"
     html = readUrlAll(url)
-    match = re.search(r">(" + station + r"\b.+?)</FONT>", html, re.MULTILINE | re.DOTALL)
+    match = re.search(station, html, re.MULTILINE | re.DOTALL)
     if match:
-        s = match.group(1)
-        metarLines.append(re.sub(r"\n *", " ", s))
+        metarLines.append(html.strip())
+    logging.info(metarLines)
     return metarLines
+
+################################################################################
+def getMetar(station):
+    """Selector btw versions."""
+    # return _getMetar1(station)
+    return _getMetar2(station)
 
 ################################################################################
 def getTaf(station):
     lines = []
-    url = "http://aviationweather.gov/adds/metars/?station_ids=" + station + \
-          "&std_trans=standard&hoursStr=most+recent+only&chk_tafs=on&submitmet=Submit"
+    #      https://aviationweather.gov/cgi-bin/data/taf.php?ids=CYHU&sep=true
+    url = "https://aviationweather.gov/cgi-bin/data/taf.php?ids=" + station + "&sep=true"
     html = readUrlAll(url)
     match = re.search(
-        re.escape(r"""<PRE><font face="Monospace,Courier" size="+1">""") + \
-        "(.+?)" + \
-        re.escape("</font></PRE>"),
-        html, re.MULTILINE | re.DOTALL)
+        r'\b' + station + r'\b',
+        html,
+        re.MULTILINE | re.DOTALL
+        )
     if match:
-        for l in match.group(1).split("\n"):
+        for l in html.split('\n'):
             l = l.strip()
             if l != "":
                 lines.append(l)
@@ -130,10 +145,9 @@ def metarHandler(station):
     lines = []
     station = station.upper()
     if len(station) > 0:  # user provided a station
-        #metarLines = getMetar(station)
-        metarLines = getMetar2(station)
+        metarLines = getMetar(station)
         if len(metarLines) > 0:  # metar data available
-            stationName = findStation(station, icao = True)
+            stationName = findStation(station, icao=True)
             if len(stationName) > 0:
                 match = re.match(r"^(...................)", stationName[0])
                 if match:
@@ -145,7 +159,7 @@ def metarHandler(station):
                 lines.append(BLANK_LINE)
                 lines += tafLines
         else: # metar data not found
-            for l in findStation(station):  # try to find the name of the station
+            for l in findStation(station, icao=False):  # try to find the name of the station
                 #                    CO GRAND JUNCTION   KGJT  GJT
                 match = re.match(r"^(.............................)", l)
                 if match:
@@ -168,8 +182,8 @@ def fgHandler(station):
     lines = []
     station = station.upper()
     if len(station) > 0: # user provided a station
-        baseUrl = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/"
-        metarLines = readUrl(baseUrl + station)
+        url = "https://tgftp.nws.noaa.gov/data/observations/metar/stations/" + station
+        metarLines = readUrl(url)
         if len(metarLines) > 0: # metar data available
             lines += metarLines
     return lines
@@ -250,9 +264,9 @@ def gmlsTest():
 ################################################################################
 def metarTest():
     station = "CYHU"
-    #print getMetar(station) == getMetar2(station)
-    #print getMetar(station)
-    #print getMetar2(station)
+    #print _getMetar1(station) == _getMetar2(station)
+    #print _getMetar1(station)
+    #print _getMetar2(station)
     #outputTest(getTaf(station))
     outputTest(metarHandler(station))
     #outputTest(findStation(station, True))

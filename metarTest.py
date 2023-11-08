@@ -1,5 +1,5 @@
 import re
-import mgouinlib as MGL
+import mgouinlib as mgl
 
 def main():
     stations = []
@@ -54,9 +54,10 @@ def loadTest():
         l = l.split()[0]
         print("##########################################")
         print(l)
-        print(MGL.readUrlAll("http://mgouin.appspot.com/metar?txtweb-message=" + l))
+        print(mgl.readUrlAll("http://mgouin.appspot.com/metar?txtweb-message=" + l))
 
 if __name__ == '__main__':
-    #main()
-    #dupTest()
-    loadTest()
+    # main()
+    # dupTest()
+    # loadTest()
+    pass

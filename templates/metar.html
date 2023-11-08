@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>METAR</title>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <meta name="txtweb-appkey" content="362799d9-f58a-4723-9fc6-8d65d2d6c8a5">
+    </head>
+    <body>
+        {% for element in lines %}
+        <div>{{ element|safe }}</div>
+        {% endfor %}
+    </body>
+</html>

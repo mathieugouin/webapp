@@ -46,9 +46,9 @@ def home_route():
 @app.route('/fg')
 def fg_route():
     """Route for FlightGear (FG) metar proxy."""
+    # Long name to match previous FG URL (this will include .TXT, ex: CYHU.TXT)
     arg = "icao-station-identifier-name1"
     args = flask.request.args
-    # Long name to match previous FG URL (this will include .TXT, ex: CYHU.TXT)
     if args is not None and arg in args:
         station = args.get(arg).upper()
         if len(station) > 0:
@@ -73,7 +73,19 @@ def mailer_route():
 @app.route('/metar')
 def metar_route():
     """Route of the metar url."""
-    return "TBD not implemented"
+    html = ""
+    station = ""
+    # http://mgouin.appspot.com/metar?txtweb-message=CYHU
+    arg = "txtweb-message"
+    args = flask.request.args
+    if args is not None and arg in args:
+        station = args.get(arg).upper()
+
+    lines = [mgl.processBlankLine(l) for l in mgl.metarHandler(station)]
+    html = flask.render_template('metar.html', lines=lines)
+
+    logging.info(html)
+    return html
 
 
 @app.route('/test')
@@ -82,7 +94,7 @@ def test_route():
     html = flask.render_template('test.html',
                            greeting='Hello you',
                            p_list=['a', 'b', 'hello you', '2 > 3', '     '])
-    logging.debug(html)
+    logging.info(html)
     return html
 
     # name = request.args.get('name')
