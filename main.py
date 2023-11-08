@@ -22,10 +22,10 @@ app = flask.Flask(
     )
 
 
-# - url: /gmls/?
-# - url: /metar/?
-# - url: /fg/?          DONE
-# - url: /mailer/?      TBD
+# - url: /gmls
+# - url: /metar         DONE
+# - url: /fg            DONE
+# - url: /mailer        TBD
 # - url: /.*            DONE
 
 
