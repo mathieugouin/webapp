@@ -42,11 +42,7 @@ jobs:
           #- windows-latest
         # https://github.com/actions/python-versions/raw/main/versions-manifest.json
         python-version:
-          #- "2.7"
-          #- "3.6"
-          #- "3.8"
-          #- "3.10"
-          - "3.11"
+          - "3.12"
       # Let the other builds complete if one is failed.
       fail-fast: false
 
@@ -64,6 +60,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --upgrade flake8
           python -m pip install --upgrade prospector[with_bandit,with_mypy]
+          python -m pip install --upgrade pytest
+          python -m pip install --upgrade coverage
           if [ -f requirements.txt ]; then python -m pip install --upgrade --requirement requirements.txt; fi
 
       - name: "List package versions"
