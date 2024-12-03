@@ -18,7 +18,3 @@
 # Main
 requests
 Flask
-
-# For CI
-pytest
-coverage
